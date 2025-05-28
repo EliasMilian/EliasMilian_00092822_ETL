@@ -1,42 +1,51 @@
-3. Pasos de instalación
-3.1 Clonar este repositorio
+# 📦 ETL PARCIAL 2 – README
+
+> **Objetivo:**  
+> Levantar un contenedor SQL Server 2022, restaurar las bases *AdventureWorks* (OLTP y DW) y ejecutar un paquete SSIS que carga tablas clave del OLTP al DW.  
+> Contraseña del usuario **sa** → **Admin2002**
+
+---
+
+## 1 · Requisitos
+
+| Herramienta | Versión mín. | Notas de instalación |
+|-------------|-------------|----------------------|
+| **Docker Desktop** | 4.x | <https://www.docker.com/> |
+| **Visual Studio 2022 Community** | 17.x | Extensión “SQL Server Integration Services Projects” |
+| **Azure Data Studio** *(opcional)* | — | Restaurar .bak y lanzar queries |
+| Terminal (PowerShell/ bash) | — | Incluido en Win10/11 |
+
+---
+
+## 2 · Clonar el repositorio
+
 bash
-Copiar
-Editar
 git clone https://github.com/TuUsuario/ETL_Parcial2.git
 cd ETL_Parcial2
-3.2 Levantar SQL Server 2022 en Docker
-powershell
-Copiar
-Editar
+
+
+## LEVANTAR EL DOCKER 
+
 docker run -d `
   -e "ACCEPT_EULA=Y" `
   -e "SA_PASSWORD=Admin2002" `
   -p 1433:1433 `
   --name sql_server_2022 `
   mcr.microsoft.com/mssql/server:2022-latest
-Contraseña del usuario sa: Admin2002
-(cámbiala si lo deseas, pero recuerda actualizarla en los pasos siguientes).
 
-3.3 Restaurar las bases de datos
-Copia los archivos AdventureWorks2022.bak y AdventureWorksDW2022.bak dentro de la carpeta data del contenedor:
 
-powershell
-Copiar
-Editar
+## RESTAURAR LAS BASES
 docker cp backups/. sql_server_2022:/var/opt/mssql/data/
-Conéctate al contenedor desde Azure Data Studio o SQLCMD y ejecuta los scripts scripts/restore_oltp.sql y scripts/restore_dw.sql.
 
-4. Ejecutar el ETL
-Abre el archivo de solución ETL_Parcial2.sln en Visual Studio.
+##5 · Ejecutar el paquete SSIS
+Abre ETL_Parcial2.sln en Visual Studio.
 
-Si es la primera vez, edita los dos Connection Managers (OLTP y DW) y confirma:
+Confirma las Connection Managers
 
 yaml
 Copiar
 Editar
-Server   : localhost,1433
-User     : sa
-Password : Admin2002
-Database : AdventureWorks2022 / AdventureWorksDW2022
-Pulsa ▶ Start (o F5).
+Server : localhost,1433
+User   : sa
+Pass   : Admin2002
+DB     : AdventureWorks2022 / AdventureWorksDW2022
